@@ -6,6 +6,7 @@ const path = require("path");
 const { handleSession } = require("./sessionHandler");
 
 function startServer(port) {
+  port = parseInt(port, 10) || 4000;
   const app = express();
   app.use(cors());
   app.use(express.static(path.join(__dirname, "..", "public")));
