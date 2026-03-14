@@ -10,6 +10,10 @@ function startServer(port) {
   app.use(cors());
   app.use(express.static(path.join(__dirname, "..", "public")));
 
+  app.get("/", (req, res) => {
+    res.json({ status: "ok", service: "zayn-md-session-generator" });
+  });
+
   app.get("/generate-session", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "index.html"));
   });
@@ -24,9 +28,8 @@ function startServer(port) {
     handleSession(socket);
   });
 
-  server.listen(port, () => {
-    console.log(`Session generator running at http://localhost:${port}`);
-    console.log(`Open http://localhost:${port}/generate-session to get a Session ID`);
+  server.listen(port, "0.0.0.0", () => {
+    console.log(`Session generator running on port ${port}`);
   });
 }
 
