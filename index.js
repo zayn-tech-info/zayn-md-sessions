@@ -4,22 +4,22 @@ const mongoose = require("mongoose");
 const { startServer } = require("./src/server");
 
 async function main() {
+  const port = process.env.PORT || 4000;
+
   const mongoUri = process.env.MONGODB_URI;
 
   if (!mongoUri) {
-    console.error("MONGODB_URI is not set in .env");
-    process.exit(1);
+    console.error("WARNING: MONGODB_URI is not set. Sessions won't be saved to DB.");
+  } else {
+    try {
+      await mongoose.connect(mongoUri);
+      console.log("Connected to MongoDB");
+    } catch (err) {
+      console.error("MongoDB connection failed:", err.message);
+      console.error("Continuing without DB — sessions won't be persisted.");
+    }
   }
 
-  try {
-    await mongoose.connect(mongoUri);
-    console.log("Connected to MongoDB");
-  } catch (err) {
-    console.error("MongoDB connection failed:", err.message);
-    process.exit(1);
-  }
-
-  const port = process.env.PORT || 4000;
   startServer(port);
 }
 
