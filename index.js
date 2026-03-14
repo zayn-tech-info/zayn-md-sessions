@@ -3,6 +3,14 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const { startServer } = require("./src/server");
 
+process.on("uncaughtException", (err) => {
+  console.error("UNCAUGHT EXCEPTION:", err);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("UNHANDLED REJECTION:", err);
+});
+
 async function main() {
   const port = process.env.PORT || 4000;
 
